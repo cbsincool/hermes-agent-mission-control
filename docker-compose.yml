@@ -29,6 +29,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=hermes2024
       - POSTGRES_DB=hermes
+    ports:
+      - "5432:5432"  # 开放外部访问
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:

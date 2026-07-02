@@ -33,11 +33,15 @@ model Mission {
   status      String    @default("pending")    // pending | active | completed | failed
   priority    String    @default("medium")     // high | medium | low
   result      String?   @db.Text
+  externalId  String?                          // 外部 ID（如飞书记录 ID、Kanban 任务 ID）
+  source      String?                          // 来源：'kanban', 'feishu'
+  tags        String?                          // 标签（JSON 数组）
   createdAt   DateTime  @default(now())
   completedAt DateTime?
 
   @@index([agentId])
   @@index([status])
+  @@index([externalId])
 }
 
 /// Ideas your agents generate for you to review.
