@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const agents = await prisma.agentState.findMany({
       orderBy: {
-        lastSeen: 'desc',
+        lastActive: 'desc',
       },
     });
 
@@ -17,18 +17,19 @@ export async function GET() {
       agents: agents.map((agent) => ({
         id: agent.id,
         name: agent.name,
+        emoji: agent.emoji,
+        role: agent.role,
         status: agent.status,
         currentTask: agent.currentTask,
         tasksCompleted: agent.tasksCompleted,
         totalCost: agent.totalCost,
-        lastSeen: agent.lastSeen,
-        hostname: agent.hostname,
+        lastActive: agent.lastActive,
       })),
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching agents:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch agents' },
+      { success: false, error: error.message },
       { status: 500 }
     );
   }
