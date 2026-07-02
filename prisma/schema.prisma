@@ -65,3 +65,24 @@ model DataStore {
   data      Json
   updatedAt DateTime @updatedAt
 }
+
+/// Scheduled events from Hermes Cron jobs or external calendars.
+/// Used by the Calendar page to show upcoming agent activities.
+model ScheduledEvent {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  agentId     String?                          // which agent this is for
+  startTime   DateTime
+  endTime     DateTime?
+  recurrence  String?                          // cron expression: "0 9 * * 1" or "daily"
+  source      String?                          // "hermes-cron", "google-calendar", etc.
+  externalId  String?                          // external event ID
+  status      String   @default("scheduled")   // scheduled | completed | cancelled
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([agentId])
+  @@index([startTime])
+  @@index([status])
+}
